@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 
 import { User } from "../models/user.model.js";
+import { sendVerificationEmail } from "../mailtrap/emails.js";
 
 import {
   generateTokenAndSetCookie,
@@ -33,7 +34,7 @@ export const signupController = async (req, res) => {
       email,
       password: hashedPassword,
       name,
-      verificationToken: verificationToken,
+      verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 100, //<- This give 24 hours to expire the token
     });
 
@@ -42,6 +43,9 @@ export const signupController = async (req, res) => {
 
     //* JWT
     generateTokenAndSetCookie(res, user._id);
+
+    //* Send Verification code by email
+    await sendVerificationEmail(user.email, verificationToken);
 
     //* Return Success (without Password)
     res.status(201).json({
@@ -53,7 +57,7 @@ export const signupController = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).json({ success: false, message: error.message });
+   res.status(400).json({ success: false, message: error.message });
   }
 };
 
