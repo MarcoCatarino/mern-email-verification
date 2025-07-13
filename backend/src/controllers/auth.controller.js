@@ -33,7 +33,7 @@ export const signupController = async (req, res) => {
       email,
       password: hashedPassword,
       name,
-      verificationToken,
+      verificationToken: verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 100, //<- This give 24 hours to expire the token
     });
 

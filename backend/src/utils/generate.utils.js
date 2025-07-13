@@ -2,9 +2,8 @@ import jwt from "jsonwebtoken";
 
 import { ENV } from "../config/env.js";
 
-export const generateVerificationToken = () => {
+export const generateVerificationToken = () =>
   Math.floor(10000 + Math.random() * 900000).toString();
-};
 
 export const generateTokenAndSetCookie = (res, userId) => {
   const token = jwt.sign({ userId }, ENV.JWT_SECRET, { expiresIn: "7d" });
