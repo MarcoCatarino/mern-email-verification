@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 
 import { User } from "../models/user.model.js";
-import { sendVerificationEmail } from "../mailtrap/emails.js";
+import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/emails.js";
 
 import {
   generateTokenAndSetCookie,
@@ -57,7 +57,45 @@ export const signupController = async (req, res) => {
       },
     });
   } catch (error) {
-   res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// todo: Verify Email Controller
+export const verifyEmailController = async (req, res) => {
+  const { code } = req.body;
+
+  try {
+    const user = await User.findOne({
+      verificationToken: code,
+      verificationTokenExpiresAt: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or Expired Verification Code",
+      });
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiresAt = undefined;
+
+    await user.save();
+
+    await sendWelcomeEmail(user.email, user.name);
+
+    res.status(200).json({
+      success: true,
+      message: "Email Verified successfully",
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
