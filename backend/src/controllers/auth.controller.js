@@ -95,7 +95,11 @@ export const verifyEmailController = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    console.log(`There was an error verifying the email: ${error.message}`);
+    res.status(400).json({
+      success: false,
+      message: "Error verifying email",
+    });
   }
 };
 
