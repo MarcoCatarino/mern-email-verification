@@ -194,6 +194,7 @@ export const forgotPasswordController = async (req, res) => {
   }
 };
 
+// todo: Reset Password Controller (reset password)
 export const resetPasswordController = async (req, res) => {
   try {
     const { token } = req.params;
