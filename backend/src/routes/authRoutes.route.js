@@ -6,6 +6,7 @@ import {
   loginController,
   logoutController,
   forgotPasswordController,
+  resetPasswordController,
 } from "../controllers/auth.controller.js";
 
 const router = Router();
@@ -22,7 +23,10 @@ router.post("/login", loginController);
 // ? LogOut Route
 router.post("/logout", logoutController);
 
-//? Forget Password (reset password)
+//? Forget Password
 router.post("/forgot-password", forgotPasswordController);
+
+//? Reset Password
+router.post("/reset-password/:token", resetPasswordController);
 
 export default router;
