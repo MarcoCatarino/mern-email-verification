@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+/* eslint-disable no-unused-vars */
+import { motion } from "motion/react";
 
 export const FloatingShape = ({ color, size, top, left, delay }) => {
   return (
