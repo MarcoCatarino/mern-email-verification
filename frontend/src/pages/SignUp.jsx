@@ -5,8 +5,8 @@ import { Lock, Mail, User } from "lucide-react";
 
 import PasswordStrength from "../components/PasswordStrength";
 
-import Input from "../components/Input";
 import { Link } from "react-router-dom";
+import Input from "../components/ui/Input";
 
 export const SignUp = () => {
   const [name, setName] = useState("");
